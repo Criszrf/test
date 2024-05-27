@@ -7,5 +7,10 @@ export function getBannerAPI(data) {
     })
 }
 
-
+export function findNewAPI(data){
+    return httpinstance({
+        url: '/home/new',
+        data: data
+    })
+}
 
