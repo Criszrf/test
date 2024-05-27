@@ -1,152 +1,61 @@
 <script setup>
-
+  import {ref , onMounted} from 'vue'
+  import { findHotAPI } from '@/apis/home'
+  import HomePanel from './HomePanel.vue'
+  const hotList = ref([])
+  const getHotList = async () => {
+    const res = await findHotAPI()
+    hotList.value = res.result
+  }
+  onMounted(() => {
+    getHotList()
+  })
 </script>
 
 <template>
-  <div class="home-category">
-    <ul class="menu">
-      <li v-for="item in 9" :key="item">
-        <RouterLink to="/">居家</RouterLink>
-        <RouterLink v-for="i in 2" :key="i" to="/">南北干货</RouterLink>
-        <!-- 弹层layer位置 -->
-        <div class="layer">
-          <h4>分类推荐 <small>根据您的购买或浏览记录推荐</small></h4>
-          <ul>
-            <li v-for="i in 5" :key="i">
-              <RouterLink to="/">
-                <img alt="" />
-                <div class="info">
-                  <p class="name ellipsis-2">
-                    男士外套
-                  </p>
-                  <p class="desc ellipsis">男士外套，冬季必选</p>
-                  <p class="price"><i>¥</i>200.00</p>
-                </div>
-              </RouterLink>
-            </li>
-          </ul>
-        </div>
+  <HomePanel title="人气推荐">
+    <ul class="goods-list">
+      <li v-for="item in hotList" :key="item.id">
+        <RouterLink to="/">
+          <img v-img-lazy="item.picture" alt="">
+          <p class="name">{{ item.title }}</p>
+          <p class="desc">{{ item.alt }}</p>
+        </RouterLink>
       </li>
     </ul>
-  </div>
+  </HomePanel>
 </template>
 
-
 <style scoped lang='scss'>
-.home-category {
-  width: 250px;
-  height: 500px;
-  background: rgba(0, 0, 0, 0.8);
-  position: relative;
-  z-index: 99;
+.goods-list {
+  display: flex;
+  justify-content: space-between;
+  height: 426px;
 
-  .menu {
-    li {
-      padding-left: 40px;
-      height: 55px;
-      line-height: 55px;
+  li {
+    width: 306px;
+    height: 406px;
+    transition: all .5s;
 
-      &:hover {
-        background: $xtxColor;
-      }
+    &:hover {
+      transform: translate3d(0, -3px, 0);
+      box-shadow: 0 3px 8px rgb(0 0 0 / 20%);
+    }
 
-      a {
-        margin-right: 4px;
-        color: #fff;
+    img {
+      width: 306px;
+      height: 306px;
+    }
 
-        &:first-child {
-          font-size: 16px;
-        }
-      }
+    p {
+      font-size: 22px;
+      padding-top: 12px;
+      text-align: center;
+    }
 
-      .layer {
-        width: 990px;
-        height: 500px;
-        background: rgba(255, 255, 255, 0.8);
-        position: absolute;
-        left: 250px;
-        top: 0;
-        display: none;
-        padding: 0 15px;
-
-        h4 {
-          font-size: 20px;
-          font-weight: normal;
-          line-height: 80px;
-
-          small {
-            font-size: 16px;
-            color: #666;
-          }
-        }
-
-        ul {
-          display: flex;
-          flex-wrap: wrap;
-
-          li {
-            width: 310px;
-            height: 120px;
-            margin-right: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #eee;
-            border-radius: 4px;
-            background: #fff;
-
-            &:nth-child(3n) {
-              margin-right: 0;
-            }
-
-            a {
-              display: flex;
-              width: 100%;
-              height: 100%;
-              align-items: center;
-              padding: 10px;
-
-              &:hover {
-                background: #e3f9f4;
-              }
-
-              img {
-                width: 95px;
-                height: 95px;
-              }
-
-              .info {
-                padding-left: 10px;
-                line-height: 24px;
-                overflow: hidden;
-
-                .name {
-                  font-size: 16px;
-                  color: #666;
-                }
-
-                .desc {
-                  color: #999;
-                }
-
-                .price {
-                  font-size: 22px;
-                  color: $priceColor;
-
-                  i {
-                    font-size: 16px;
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-
-      // 关键样式  hover状态下的layer盒子变成block
-      &:hover {
-        .layer {
-          display: block;
-        }
-      }
+    .desc {
+      color: #999;
+      font-size: 18px;
     }
   }
 }

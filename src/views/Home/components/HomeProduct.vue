@@ -1,11 +1,29 @@
 <script setup>
 import HomePanel from './HomePanel.vue'
+import GoodsItem from './GoodsItem.vue'
+import {ref,onMounted} from 'vue'
+import {getGoodsAPI} from '@/apis/home'
+const goodsProduct = ref([])
+const getGoods = async()=>{
+  const res = await getGoodsAPI()
+  goodsProduct.value = res.result
+  console.log(res.result,'getGoods');
+}
+
+onMounted(async()=>{
+  getGoods()
+})
+
+
+
+
+
 
 </script>
 
 <template>
   <div class="home-product">
-    <!-- <HomePanel :title="cate.name" v-for="cate in goodsProduct" :key="cate.id">
+    <HomePanel :title="cate.name" v-for="cate in goodsProduct" :key="cate.id">
       <div class="box">
         <RouterLink class="cover" to="/">
           <img :src="cate.picture" />
@@ -15,17 +33,12 @@ import HomePanel from './HomePanel.vue'
           </strong>
         </RouterLink>
         <ul class="goods-list">
-          <li v-for="good in cate.goods" :key="good.id">
-            <RouterLink to="/" class="goods-item">
-              <img :src="good.picture" alt="" />
-              <p class="name ellipsis">{{ good.name }}</p>
-              <p class="desc ellipsis">{{ good.desc }}</p>
-              <p class="price">&yen;{{ good.price }}</p>
-            </RouterLink>
+          <li v-for="goods in cate.goods" :key="goods.id">
+            <GoodsItem :goods="goods"></GoodsItem>
           </li>
         </ul>
       </div>
-    </HomePanel> -->
+    </HomePanel>
   </div>
 </template>
 

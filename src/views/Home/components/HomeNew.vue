@@ -6,7 +6,6 @@
   const getNewList = async ()=>{
     const res = await findNewAPI()
     newList.value = res.result
-    console.log(newList.value ,'getNewList')
   }
   onMounted(()=>getNewList())
 </script>

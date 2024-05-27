@@ -13,4 +13,14 @@ export function findNewAPI(data){
         data: data
     })
 }
-
+export function findHotAPI(data){
+    return httpinstance({
+        url: '/home/hot',
+        data: data
+    })
+}
+export const getGoodsAPI = () => {
+    return httpinstance({
+      url: '/home/goods'
+    })
+  }
